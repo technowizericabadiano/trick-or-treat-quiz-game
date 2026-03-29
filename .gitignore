@@ -1,0 +1,6 @@
+node_modules
+build
+.wrangler
+pptx_reference
+temp_pptx_extract
+*.log

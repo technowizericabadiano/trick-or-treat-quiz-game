@@ -1,0 +1,26 @@
+{
+  "id": ".",
+  "name": "Trick or Treat Quiz Game",
+  "short_name": "TrickTreat",
+  "description": "A Halloween-themed quiz and challenge game with trick cards, treat cards, and spooky sound effects.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#413b3b",
+  "theme_color": "#413b3b",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
