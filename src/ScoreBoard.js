@@ -9,7 +9,7 @@ function ScoreChip({ label, value }) {
   );
 }
 
-function ScoreBoard({ combo, gameOver, onReset, remaining, score, stats }) {
+function ScoreBoard({ combo, gameOver, onReset, openCount, remaining, score, stats }) {
   return (
     <header className="score-board">
       <div className="score-brand">
@@ -22,6 +22,7 @@ function ScoreBoard({ combo, gameOver, onReset, remaining, score, stats }) {
         <ScoreChip label="Left" value={remaining} />
         <ScoreChip label="Correct" value={stats.correct} />
         <ScoreChip label="Streak" value={combo} />
+        <ScoreChip label="Opens" value={openCount ?? "..."} />
       </div>
 
       <div className="score-actions">

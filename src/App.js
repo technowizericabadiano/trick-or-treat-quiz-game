@@ -4,6 +4,10 @@ import Modal from "./Modal";
 import ScoreBoard from "./ScoreBoard";
 import "./App.css";
 
+const VISIT_COUNTER_NAMESPACE = "technowizericabadiano-trick-or-treat";
+const VISIT_COUNTER_NAME = "game-opens";
+const VISIT_SESSION_KEY = "trick-or-treat-open-counted";
+
 const deckTemplate = [
   { type: "penalty", text: "Lose half your points!", penaltyType: "loseHalf" },
   { type: "reward", text: "Gain 25 points!", value: 25 },
@@ -157,12 +161,23 @@ function playRewardSound() {
   playTone(1240, 0.16, "triangle", 0.2, 0.06);
 }
 
+async function readCounterValue(endpoint) {
+  const response = await fetch(endpoint);
+  if (!response.ok) {
+    throw new Error(`Counter request failed: ${response.status}`);
+  }
+
+  const payload = await response.json();
+  return typeof payload?.value === "number" ? payload.value : null;
+}
+
 function App() {
   const [score, setScore] = useState(0);
   const [cards, setCards] = useState([]);
   const [activeCard, setActiveCard] = useState(null);
   const [gameOver, setGameOver] = useState(false);
   const [combo, setCombo] = useState(0);
+  const [openCount, setOpenCount] = useState(null);
   const [stats, setStats] = useState({ correct: 0, wrong: 0 });
   const correctSoundRef = useRef(null);
   const wrongSoundRef = useRef(null);
@@ -222,6 +237,46 @@ function App() {
   useEffect(() => {
     startGame();
   }, [startGame]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const syncOpenCount = async () => {
+      const counterBaseUrl = `https://api.counterapi.dev/v1/${VISIT_COUNTER_NAMESPACE}/${VISIT_COUNTER_NAME}`;
+      const countedThisSession =
+        typeof window !== "undefined" &&
+        window.sessionStorage.getItem(VISIT_SESSION_KEY) === "1";
+
+      try {
+        const nextValue = await readCounterValue(
+          countedThisSession ? counterBaseUrl : `${counterBaseUrl}/up`
+        );
+
+        if (!cancelled) {
+          setOpenCount(nextValue);
+        }
+
+        if (!countedThisSession && typeof window !== "undefined") {
+          window.sessionStorage.setItem(VISIT_SESSION_KEY, "1");
+        }
+      } catch (error) {
+        if (!countedThisSession) {
+          try {
+            const existingValue = await readCounterValue(counterBaseUrl);
+            if (!cancelled) {
+              setOpenCount(existingValue);
+            }
+          } catch (_) {}
+        }
+      }
+    };
+
+    syncOpenCount();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const handleCardClick = useCallback(
     (cardId) => {
@@ -325,6 +380,7 @@ function App() {
         <ScoreBoard
           combo={combo}
           gameOver={gameOver}
+          openCount={openCount}
           onReset={startGame}
           remaining={remainingCards}
           score={score}
