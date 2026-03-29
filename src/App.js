@@ -341,6 +341,7 @@ function App() {
           />
         ) : null}
       </div>
+      <footer className="site-credit">kwerks</footer>
     </div>
   );
 }
