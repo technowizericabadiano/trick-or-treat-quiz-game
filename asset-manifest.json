@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/trick-or-treat-quiz-game/static/css/main.86e21229.css",
-    "main.js": "/trick-or-treat-quiz-game/static/js/main.dcc2a0b4.js",
+    "main.js": "/trick-or-treat-quiz-game/static/js/main.9a1818b9.js",
     "static/media/image8.png": "/trick-or-treat-quiz-game/static/media/image8.0e06402da2e8ae0cc430.png",
     "static/media/image5.png": "/trick-or-treat-quiz-game/static/media/image5.b194349211840817d3aa.png",
     "static/media/image6.png": "/trick-or-treat-quiz-game/static/media/image6.0207881465565f27c688.png",
@@ -15,6 +15,6 @@
   },
   "entrypoints": [
     "static/css/main.86e21229.css",
-    "static/js/main.dcc2a0b4.js"
+    "static/js/main.9a1818b9.js"
   ]
 }
