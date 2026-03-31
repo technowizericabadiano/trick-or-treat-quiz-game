@@ -1,5 +1,5 @@
 {
-  "short_name": "Trick or Treat",
+  "short_name": "TrickOrTreat",
   "name": "Trick or Treat Quiz Game",
   "icons": [
     {
@@ -11,5 +11,7 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#413b3b",
-  "background_color": "#ffffff"
+  "background_color": "#413b3b",
+  "orientation": "portrait",
+  "description": "A Halloween-themed quiz game optimized for mobile play."
 }
