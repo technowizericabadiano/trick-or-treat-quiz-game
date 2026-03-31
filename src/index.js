@@ -2,16 +2,24 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./App.css";
+import { LocalizationProvider } from "./LocalizationContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <App />
+    <LocalizationProvider>
+      <App />
+    </LocalizationProvider>
   </React.StrictMode>
 );
 
-if ("serviceWorker" in navigator) {
+if (typeof window !== "undefined" && "serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    const serviceWorkerUrl = `${process.env.PUBLIC_URL}/sw.js`;
-    navigator.serviceWorker.register(serviceWorkerUrl).catch(() => {});
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      registrations.forEach((registration) => registration.unregister());
+    });
   });
+
+  if ("caches" in window) {
+    caches.keys().then((keys) => keys.forEach((key) => caches.delete(key)));
+  }
 }

@@ -1,0 +1,30 @@
+[
+  {
+    "id": "player-001",
+    "name": "Player 001",
+    "group": "Section A",
+    "canPlay": true,
+    "note": "Registered and ready to play."
+  },
+  {
+    "id": "player-002",
+    "name": "Player 002",
+    "group": "Section B",
+    "canPlay": true,
+    "note": "Registered and ready to play."
+  },
+  {
+    "id": "player-003",
+    "name": "Player 003",
+    "group": "Section C",
+    "canPlay": true,
+    "note": "Registered and ready to play."
+  },
+  {
+    "id": "player-004",
+    "name": "Player 004",
+    "group": "Waiting List",
+    "canPlay": false,
+    "note": "Set canPlay to true in this file when this player is allowed."
+  }
+]

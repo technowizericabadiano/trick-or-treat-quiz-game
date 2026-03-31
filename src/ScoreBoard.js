@@ -1,39 +1,69 @@
-import React from "react";
+import React, { memo } from "react";
+import { useLocalization } from "./LocalizationContext";
+import { ghostArt, treatArt, trickGhostArt } from "./pptThemeAssets";
 
-function ScoreChip({ label, value }) {
+function StatBox({ label, value }) {
   return (
-    <div className="score-chip-box">
-      <span className="score-chip-label">{label}</span>
-      <strong className="score-chip-value">{value}</strong>
+    <div className="stat-box">
+      <span className="stat-label">{label}</span>
+      <strong className="stat-value">{value}</strong>
     </div>
   );
 }
 
-function ScoreBoard({ combo, gameOver, onReset, remaining, score, stats }) {
+const ScoreBoard = memo(function ScoreBoard({
+  gameOver,
+  onBackToMenu,
+  onReset,
+  playerGroup,
+  playerName,
+  quizTitle,
+  remaining,
+  score,
+  totalCards,
+}) {
+  const { copy } = useLocalization();
+
   return (
     <header className="score-board">
-      <div className="score-brand">
-        <h1>Trick or Treat</h1>
-        <p>Pick a pumpkin, face the surprise, and clear the board.</p>
+      <div className="score-illustration" aria-hidden="true">
+        <img className="score-ghost" src={ghostArt} alt="" />
+        <img className="score-illustration-accent treat" src={treatArt} alt="" />
+        <img className="score-illustration-accent trick" src={trickGhostArt} alt="" />
       </div>
 
-      <div className="score-chip-row">
-        <ScoreChip label="Points" value={score} />
-        <ScoreChip label="Left" value={remaining} />
-        <ScoreChip label="Correct" value={stats.correct} />
-        <ScoreChip label="Streak" value={combo} />
+      <div className="title-block">
+        <p className="eyebrow">{quizTitle}</p>
+        <h1>{copy.gameTitle}</h1>
+        <p className="subtitle">{copy.subtitle}</p>
+        <div className="player-banner">
+          <span className="player-banner-label">{copy.playerLabel}</span>
+          <strong>{copy.playerSummary(playerName, playerGroup)}</strong>
+        </div>
       </div>
 
-      <div className="score-actions">
-        <button type="button" className="board-reset-button" onClick={onReset}>
-          {gameOver ? "Play Again" : "Shuffle Board"}
-        </button>
-        {gameOver ? (
-          <div className="game-over-banner">Final score: {score}. Board cleared.</div>
-        ) : null}
+      <div className="score-side">
+        <div className="stats-row">
+          <StatBox label={copy.scoreLabel} value={score} />
+          <StatBox label={copy.cardsLeftLabel} value={remaining} />
+        </div>
+
+        <div className="score-actions">
+          <div className="action-row">
+            <button type="button" className="reset-button" onClick={onReset}>
+              {gameOver ? copy.playAgain : copy.restart}
+            </button>
+            <button type="button" className="menu-button" onClick={onBackToMenu}>
+              {copy.changeQuiz}
+            </button>
+          </div>
+          <p className="status-text">
+            {gameOver ? copy.boardComplete : copy.totalCardsLabel(totalCards)}
+          </p>
+        </div>
       </div>
     </header>
   );
-}
+});
 
 export default ScoreBoard;
